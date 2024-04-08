@@ -1,10 +1,10 @@
 package pk.ajneb97.utils;
 
-import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.managers.MessagesManager;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Color;
 import org.bukkit.entity.Player;
+import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.managers.MessagesManager;
 
 import java.util.ArrayList;
 

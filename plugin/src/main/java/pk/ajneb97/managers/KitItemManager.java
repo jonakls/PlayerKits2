@@ -1,7 +1,5 @@
 package pk.ajneb97.managers;
 
-import pk.ajneb97.PlayerKits2;
-import ajneb97.model.item.*;
 import com.destroystokyo.paper.Namespaced;
 import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
@@ -13,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.model.internal.KitVariable;
 import pk.ajneb97.model.item.*;
 import pk.ajneb97.utils.ItemUtils;

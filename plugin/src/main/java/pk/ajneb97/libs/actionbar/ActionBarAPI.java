@@ -1,13 +1,13 @@
 package pk.ajneb97.libs.actionbar;
 
-import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.utils.OtherUtils;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.managers.MessagesManager;
+import pk.ajneb97.utils.OtherUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

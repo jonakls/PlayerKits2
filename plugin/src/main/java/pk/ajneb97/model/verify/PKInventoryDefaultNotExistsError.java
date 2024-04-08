@@ -1,7 +1,7 @@
 package pk.ajneb97.model.verify;
 
-import pk.ajneb97.utils.JSONMessage;
 import org.bukkit.entity.Player;
+import pk.ajneb97.utils.JSONMessage;
 
 import java.util.ArrayList;
 import java.util.List;

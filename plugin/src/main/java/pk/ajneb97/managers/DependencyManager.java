@@ -1,9 +1,9 @@
 package pk.ajneb97.managers;
 
-import pk.ajneb97.PlayerKits2;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
+import pk.ajneb97.PlayerKits2;
 
 public class DependencyManager {
 

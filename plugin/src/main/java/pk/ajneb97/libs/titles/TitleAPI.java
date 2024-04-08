@@ -1,11 +1,11 @@
 package pk.ajneb97.libs.titles;
 
-import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.utils.OtherUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+import pk.ajneb97.managers.MessagesManager;
+import pk.ajneb97.utils.OtherUtils;
 
 import java.lang.reflect.Constructor;
 

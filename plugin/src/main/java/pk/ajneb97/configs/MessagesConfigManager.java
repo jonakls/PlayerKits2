@@ -1,8 +1,8 @@
 package pk.ajneb97.configs;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
 import java.nio.file.Files;

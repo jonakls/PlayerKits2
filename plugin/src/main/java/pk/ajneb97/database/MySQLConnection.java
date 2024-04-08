@@ -1,10 +1,10 @@
 package pk.ajneb97.database;
 
-import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.managers.MessagesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
+import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.managers.MessagesManager;
 import pk.ajneb97.model.PlayerData;
 import pk.ajneb97.model.PlayerDataKit;
 
@@ -12,7 +12,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MySQLConnection {
 

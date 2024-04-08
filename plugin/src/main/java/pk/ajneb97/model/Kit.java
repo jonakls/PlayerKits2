@@ -1,8 +1,8 @@
 package pk.ajneb97.model;
 
+import org.bukkit.command.CommandSender;
 import pk.ajneb97.model.item.KitItem;
 import pk.ajneb97.utils.PlayerUtils;
-import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 

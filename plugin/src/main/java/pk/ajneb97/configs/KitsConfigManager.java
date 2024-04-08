@@ -1,8 +1,8 @@
 package pk.ajneb97.configs;
 
+import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.KitItemManager;
-import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.model.Kit;
 import pk.ajneb97.model.KitAction;
 import pk.ajneb97.model.KitRequirements;

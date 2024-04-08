@@ -1,8 +1,7 @@
 package pk.ajneb97.managers;
 
-import pk.ajneb97.PlayerKits2;
-import ajneb97.model.verify.*;
 import org.bukkit.entity.Player;
+import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.model.Kit;
 import pk.ajneb97.model.KitAction;
 import pk.ajneb97.model.inventory.ItemKitInventory;

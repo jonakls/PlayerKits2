@@ -1,10 +1,9 @@
 package pk.ajneb97.managers;
 
-import pk.ajneb97.PlayerKits2;
-import ajneb97.model.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
+import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.configs.KitsConfigManager;
 import pk.ajneb97.configs.PlayersConfigManager;
 import pk.ajneb97.model.*;
