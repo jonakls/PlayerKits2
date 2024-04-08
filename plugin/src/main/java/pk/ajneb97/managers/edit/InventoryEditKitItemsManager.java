@@ -10,11 +10,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.KitItemManager;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.inventory.InventoryPlayer;
-import pk.ajneb97.model.item.KitItem;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.item.KitItem;
 import pk.ajneb97.utils.InventoryItem;
-import pk.ajneb97.utils.ItemUtils;
+import pk.ajneb97.api.utils.ItemUtils;
 import pk.ajneb97.utils.OtherUtils;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class InventoryEditKitItemsManager {
 
         //Kit Items
         Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        ArrayList<KitItem> items = kit.getItems();
+        List<KitItem> items = kit.getItems();
         KitItemManager kitItemManager = plugin.getKitItemManager();
         int slot = 0;
         for(KitItem kitItem : items){

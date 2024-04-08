@@ -9,12 +9,12 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import pk.ajneb97.configs.MainConfigManager;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.internal.GiveKitInstructions;
-import pk.ajneb97.model.internal.PlayerKitsMessageResult;
-import pk.ajneb97.model.inventory.InventoryPlayer;
-import pk.ajneb97.model.inventory.KitInventory;
-import pk.ajneb97.utils.PlayerUtils;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.internal.GiveKitInstructions;
+import pk.ajneb97.api.model.internal.PlayerKitsMessageResult;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.inventory.KitInventory;
+import pk.ajneb97.api.utils.PlayerUtils;
 
 import java.util.ArrayList;
 import java.util.List;

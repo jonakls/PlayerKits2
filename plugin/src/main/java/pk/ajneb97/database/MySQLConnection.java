@@ -5,8 +5,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.PlayerData;
-import pk.ajneb97.model.PlayerDataKit;
+import pk.ajneb97.api.model.player.PlayerData;
+import pk.ajneb97.api.model.player.PlayerDataKit;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

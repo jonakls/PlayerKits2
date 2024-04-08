@@ -2,8 +2,8 @@ package pk.ajneb97.configs;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.model.PlayerData;
-import pk.ajneb97.model.PlayerDataKit;
+import pk.ajneb97.api.model.player.PlayerData;
+import pk.ajneb97.api.model.player.PlayerDataKit;
 
 import java.io.File;
 import java.util.ArrayList;

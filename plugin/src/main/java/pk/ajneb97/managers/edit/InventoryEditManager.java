@@ -8,11 +8,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.KitAction;
-import pk.ajneb97.model.internal.KitPosition;
-import pk.ajneb97.model.inventory.InventoryPlayer;
-import pk.ajneb97.model.item.KitItem;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.KitAction;
+import pk.ajneb97.api.model.internal.KitPosition;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.item.KitItem;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 
@@ -251,14 +251,14 @@ public class InventoryEditManager {
         players.add(inventoryPlayer);
     }
 
-    public List<String> setActionItemLore(ArrayList<KitAction> actions,List<String> lore){
+    public List<String> setActionItemLore(List<KitAction> actions, List<String> lore) {
         int max = 20;
         if(actions.isEmpty()){
             lore.add(MessagesManager.getColoredMessage("&cNONE"));
         }else{
             for(KitAction kitAction : actions){
                 String actionLine = kitAction.getAction();
-                List<String> separatedActionLine = new ArrayList<String>();
+                List<String> separatedActionLine = new ArrayList<>();
                 int currentPos = 0;
                 for(int i=0;i<actionLine.length();i++) {
                     if(currentPos >= 35 && actionLine.charAt(i) == ' ') {

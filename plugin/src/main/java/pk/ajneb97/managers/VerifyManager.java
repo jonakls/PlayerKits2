@@ -2,13 +2,13 @@ package pk.ajneb97.managers;
 
 import org.bukkit.entity.Player;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.KitAction;
-import pk.ajneb97.model.inventory.ItemKitInventory;
-import pk.ajneb97.model.inventory.KitInventory;
-import pk.ajneb97.model.item.KitItem;
-import pk.ajneb97.model.verify.*;
-import pk.ajneb97.utils.ItemUtils;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.KitAction;
+import pk.ajneb97.api.model.inventory.ItemKitInventory;
+import pk.ajneb97.api.model.inventory.KitInventory;
+import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.verify.*;
+import pk.ajneb97.api.utils.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class VerifyManager {
         }
     }
 
-    public void verifyActions(ArrayList<KitAction> actions,String actionGroup,String kitName){
+    public void verifyActions(List<KitAction> actions,String actionGroup,String kitName){
         for(int i=0;i<actions.size();i++){
             KitAction action = actions.get(i);
             String[] actionText = action.getAction().split(" ");

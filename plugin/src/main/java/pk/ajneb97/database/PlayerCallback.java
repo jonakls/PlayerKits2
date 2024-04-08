@@ -1,6 +1,6 @@
 package pk.ajneb97.database;
 
-import pk.ajneb97.model.PlayerData;
+import pk.ajneb97.api.model.player.PlayerData;
 
 public interface PlayerCallback {
 

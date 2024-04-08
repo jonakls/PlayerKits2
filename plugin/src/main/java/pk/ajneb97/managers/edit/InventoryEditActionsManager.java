@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.KitAction;
-import pk.ajneb97.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.KitAction;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 
@@ -61,7 +61,7 @@ public class InventoryEditActionsManager {
 
         //Set Actions
         Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        ArrayList<KitAction> actions = getKitActionsFromType(kit,type);
+        List<KitAction> actions = getKitActionsFromType(kit,type);
         int slot = 0;
         for(KitAction kitAction : actions){
             String executeBeforeItems = kitAction.isExecuteBeforeItems() ? "&aYES" : "&cNO";
@@ -98,7 +98,7 @@ public class InventoryEditActionsManager {
     public void removeAction(InventoryPlayer inventoryPlayer,int slot){
         Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String type = inventoryPlayer.getInventoryName().replace("edit_actions_","");
-        ArrayList<KitAction> actions = getKitActionsFromType(kit,type);
+        List<KitAction> actions = getKitActionsFromType(kit,type);
         actions.remove(slot);
 
         openInventory(inventoryPlayer,type);
@@ -121,7 +121,7 @@ public class InventoryEditActionsManager {
     public void addAction(InventoryPlayer inventoryPlayer,String message){
         Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String type = inventoryPlayer.getInventoryName().replace("edit_chat_add_action_","");
-        ArrayList<KitAction> actions = getKitActionsFromType(kit,type);
+        List<KitAction> actions = getKitActionsFromType(kit,type);
         actions.add(new KitAction(message,null,false,false));
 
         inventoryEditManager.removeInventoryPlayer(inventoryPlayer.getPlayer());
@@ -145,8 +145,8 @@ public class InventoryEditActionsManager {
         }
     }
 
-    public ArrayList<KitAction> getKitActionsFromType(Kit kit,String type){
-        ArrayList<KitAction> actions = null;
+    public List<KitAction> getKitActionsFromType(Kit kit, String type) {
+        List<KitAction> actions;
         if(type.equals("claim")){
             actions = kit.getClaimActions();
         }else{

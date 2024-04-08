@@ -12,9 +12,9 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.model.internal.KitVariable;
-import pk.ajneb97.model.item.*;
-import pk.ajneb97.utils.ItemUtils;
+import pk.ajneb97.api.model.internal.KitVariable;
+import pk.ajneb97.api.model.item.*;
+import pk.ajneb97.api.utils.ItemUtils;
 import pk.ajneb97.utils.OtherUtils;
 
 import java.util.*;

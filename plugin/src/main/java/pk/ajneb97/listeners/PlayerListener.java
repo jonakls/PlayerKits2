@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.InventoryManager;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
 
 public class PlayerListener implements Listener {
 

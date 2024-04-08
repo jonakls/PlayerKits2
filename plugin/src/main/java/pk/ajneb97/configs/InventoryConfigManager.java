@@ -3,9 +3,9 @@ package pk.ajneb97.configs;
 import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.KitItemManager;
-import pk.ajneb97.model.inventory.ItemKitInventory;
-import pk.ajneb97.model.inventory.KitInventory;
-import pk.ajneb97.model.item.KitItem;
+import pk.ajneb97.api.model.inventory.ItemKitInventory;
+import pk.ajneb97.api.model.inventory.KitInventory;
+import pk.ajneb97.api.model.item.KitItem;
 import pk.ajneb97.utils.OtherUtils;
 
 import java.io.IOException;

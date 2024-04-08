@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
 import pk.ajneb97.managers.PlayerDataManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.utils.PlayerUtils;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.utils.PlayerUtils;
 
 public class PlayerKitsAPI {
 

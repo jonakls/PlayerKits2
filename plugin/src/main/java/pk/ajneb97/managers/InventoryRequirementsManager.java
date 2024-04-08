@@ -6,12 +6,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.KitRequirements;
-import pk.ajneb97.model.internal.GiveKitInstructions;
-import pk.ajneb97.model.internal.PlayerKitsMessageResult;
-import pk.ajneb97.model.inventory.InventoryPlayer;
-import pk.ajneb97.utils.PlayerUtils;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.KitRequirements;
+import pk.ajneb97.api.model.internal.GiveKitInstructions;
+import pk.ajneb97.api.model.internal.PlayerKitsMessageResult;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.utils.PlayerUtils;
 
 import java.util.ArrayList;
 import java.util.List;

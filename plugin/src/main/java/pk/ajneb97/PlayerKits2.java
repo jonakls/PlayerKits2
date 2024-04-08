@@ -14,10 +14,10 @@ import pk.ajneb97.listeners.PlayerListener;
 import pk.ajneb97.managers.*;
 import pk.ajneb97.managers.dependencies.Metrics;
 import pk.ajneb97.managers.edit.InventoryEditManager;
-import pk.ajneb97.model.internal.UpdateCheckerResult;
+import pk.ajneb97.api.model.internal.UpdateCheckerResult;
 import pk.ajneb97.tasks.InventoryUpdateTaskManager;
 import pk.ajneb97.tasks.PlayerDataSaveTask;
-import pk.ajneb97.utils.ServerVersion;
+import pk.ajneb97.api.utils.ServerVersion;
 import pk.ajneb97.versions.NMSManager;
 
 @Deprecated

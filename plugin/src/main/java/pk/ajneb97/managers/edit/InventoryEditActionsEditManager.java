@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.KitAction;
-import pk.ajneb97.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.KitAction;
+import pk.ajneb97.api.model.inventory.InventoryPlayer;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 

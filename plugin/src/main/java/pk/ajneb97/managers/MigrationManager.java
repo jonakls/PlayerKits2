@@ -4,11 +4,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.*;
+import pk.ajneb97.api.model.player.PlayerData;
+import pk.ajneb97.api.model.player.PlayerDataKit;
 import pk.ajneb97.configs.KitsConfigManager;
 import pk.ajneb97.configs.PlayersConfigManager;
 import pk.ajneb97.model.*;
-import pk.ajneb97.model.item.KitItem;
-import pk.ajneb97.model.item.KitItemSkullData;
+import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.item.KitItemSkullData;
 
 import java.io.File;
 import java.util.ArrayList;

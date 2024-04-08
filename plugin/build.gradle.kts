@@ -9,12 +9,12 @@ repositories {
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     maven("https://jitpack.io")
     maven("https://libraries.minecraft.net/")
-    maven("https://repo.papermc.io/repository/maven-public/")
 }
 
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    implementation(project(":api"))
+
     compileOnly("me.clip:placeholderapi:2.11.1")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
     compileOnly("com.mojang:authlib:1.5.25")

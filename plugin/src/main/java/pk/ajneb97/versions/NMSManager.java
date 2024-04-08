@@ -2,10 +2,14 @@ package pk.ajneb97.versions;
 
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.utils.ServerVersion;
+import pk.ajneb97.api.utils.ServerVersion;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class NMSManager {
 

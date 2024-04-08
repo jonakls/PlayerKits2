@@ -3,10 +3,10 @@ package pk.ajneb97.configs;
 import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.KitItemManager;
-import pk.ajneb97.model.Kit;
-import pk.ajneb97.model.KitAction;
-import pk.ajneb97.model.KitRequirements;
-import pk.ajneb97.model.item.KitItem;
+import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.KitAction;
+import pk.ajneb97.api.model.KitRequirements;
+import pk.ajneb97.api.model.item.KitItem;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -198,7 +198,7 @@ public class KitsConfigManager {
         kitConfig.saveConfig();
     }
 
-    public void saveActions(ArrayList<KitAction> kitActions,String actionType,FileConfiguration config,KitItemManager kitItemManager){
+    public void saveActions(List<KitAction> kitActions,String actionType,FileConfiguration config,KitItemManager kitItemManager){
         int currentPos = 1;
         for(KitAction kitAction : kitActions){
             String path = "actions."+actionType+"."+currentPos;
