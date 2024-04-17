@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version ("8.1.1")
+    alias(libs.plugins.shadow)
 }
 
 
@@ -15,13 +15,13 @@ repositories {
 dependencies {
     implementation(project(":api"))
 
-    compileOnly("me.clip:placeholderapi:2.11.1")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    compileOnly("com.mojang:authlib:1.5.25")
-    implementation("com.zaxxer:HikariCP:4.0.3")
+    compileOnly(libs.placeholder)
+    compileOnly(libs.miniplaceholder)
+    compileOnly(libs.vault)
+    compileOnly(libs.mojang)
 
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation(libs.hikari)
+    implementation(libs.bundles.nmessage)
 }
 
 tasks {
@@ -31,6 +31,10 @@ tasks {
 
     shadowJar {
         archiveBaseName.set("PlayerKitsRev")
+    }
+
+    java {
+        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     }
 }
 
