@@ -2,7 +2,8 @@ package pk.ajneb97.configs;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.api.model.Kit;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.configuration.CustomConfiguration;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,10 +13,10 @@ import java.nio.file.Paths;
 public class MainConfigManager {
 
     private PlayerKits2 plugin;
-    private CustomConfig configFile;
+    private CustomConfiguration configFile;
 
     //Options
-    private Kit newKitDefault;
+    private KitModel newKitModelDefault;
     private boolean kitPreview;
     private boolean closeInventoryOnClaim;
     private boolean claimKitShortCommand;
@@ -27,13 +28,13 @@ public class MainConfigManager {
 
     public MainConfigManager(PlayerKits2 plugin){
         this.plugin = plugin;
-        this.configFile = new CustomConfig("config.yml",plugin,null, false);
+        this.configFile = new CustomConfiguration("config.yml",plugin,null, false);
         this.configFile.registerConfig();
     }
 
     public void configure(){
-        FileConfiguration config = configFile.getConfig();
-        newKitDefault = KitsConfigManager.getKitFromConfig(config,plugin,null,"new_kit_default_values.");
+        FileConfiguration config = configFile.get();
+        newKitModelDefault = KitsConfigManager.getKitFromConfig(config,plugin,null,"new_kit_default_values.");
         kitPreview = config.getBoolean("kit_preview");
         closeInventoryOnClaim = config.getBoolean("close_inventory_on_claim");
         kitPreviewRequiresKitPermission = config.getBoolean("kit_preview_requires_kit_permission");
@@ -53,7 +54,7 @@ public class MainConfigManager {
     }
 
     public FileConfiguration getConfig(){
-        return configFile.getConfig();
+        return configFile.get();
     }
 
     public void checkUpdate(){
@@ -72,8 +73,8 @@ public class MainConfigManager {
         }
     }
 
-    public Kit getNewKitDefault() {
-        return newKitDefault;
+    public KitModel getNewKitDefault() {
+        return newKitModelDefault;
     }
 
     public boolean isKitPreview() {

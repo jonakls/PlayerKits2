@@ -6,9 +6,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import pk.ajneb97.api.utils.ItemUtils;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.item.KitItemSkullData;
+import pk.ajneb97.api.model.kit.item.KitItemSkullData;
 
 import java.util.List;
 

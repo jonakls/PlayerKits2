@@ -7,12 +7,12 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.internal.KitPosition;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
-import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.gui.KitPosition;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
+import pk.ajneb97.api.model.kit.item.KitItem;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 
@@ -79,7 +79,7 @@ public class InventoryEditManager {
         inventoryPlayer.setInventoryName("edit_main_inventory");
         Inventory inv = Bukkit.createInventory(null, 45, MessagesManager.getColoredMessage("&9Editing Kit"));
 
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
 
         //Set Position
         List<String> lore = new ArrayList<String>();
@@ -88,7 +88,7 @@ public class InventoryEditManager {
         lore.add("");
         String slot = "none";
         String inventoryName = "none";
-        KitPosition kitPosition = plugin.getInventoryManager().getKitPositionByKitName(kit.getName());
+        KitPosition kitPosition = plugin.getInventoryManager().getKitPositionByKitName(kitModel.getName());
         if (kitPosition != null) {
             slot = kitPosition.getSlot() + "";
             inventoryName = kitPosition.getInventoryName();
@@ -102,7 +102,7 @@ public class InventoryEditManager {
         lore.add("&7Click to define the cooldown of");
         lore.add("&7the kit.");
         lore.add("");
-        lore.add("&7Current Cooldown: &a" + kit.getCooldown() + "(s)");
+        lore.add("&7Current Cooldown: &a" + kitModel.getCooldown() + "(s)");
         if (OtherUtils.isLegacy()) {
             new InventoryItem(inv, 11, Material.valueOf("WATCH")).name("&eSet &6&lCooldown").lore(lore).ready();
         } else {
@@ -114,10 +114,10 @@ public class InventoryEditManager {
         lore.add("&7Click to enable/disable whether this kit");
         lore.add("&7needs permissions to be claimed.");
         lore.add("&7The permission will be:");
-        lore.add("&eplayerkits.kit."+kit.getName());
+        lore.add("&eplayerkits.kit."+ kitModel.getName());
         lore.add("");
         String permission = "&cNO";
-        if (kit.isPermissionRequired()) {
+        if (kitModel.isPermissionRequired()) {
             permission = "&aYES";
         }
         lore.add("&7Current Status: " + permission);
@@ -129,7 +129,7 @@ public class InventoryEditManager {
         lore.add("&7should be claimed just one time.");
         lore.add("");
         String oneTime = "&cNO";
-        if (kit.isOneTime()) {
+        if (kitModel.isOneTime()) {
             oneTime = "&aYES";
         }
         lore.add("&7Current Status: " + oneTime);
@@ -142,7 +142,7 @@ public class InventoryEditManager {
         lore.add("&7this kit is claimed.");
         lore.add("");
         String autoArmor = "&cNO";
-        if (kit.isAutoArmor()) {
+        if (kitModel.isAutoArmor()) {
             autoArmor = "&aYES";
         }
         lore.add("&7Current Status: " + autoArmor);
@@ -159,7 +159,7 @@ public class InventoryEditManager {
         lore.add("&7Click to edit the default kit display");
         lore.add("&7item.");
         lore.add("");
-        lore.add("&7Present: "+(kit.getDisplayItemDefault() != null ? "&aYES" : "&cNO"));
+        lore.add("&7Present: "+(kitModel.getDisplayItemDefault() != null ? "&aYES" : "&cNO"));
         new InventoryItem(inv, 38, headMaterial)
                 .setSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWNkZTUxNGFmYTE5NGQ1Y2JkMDQ3N2MwNWI3Y2IxODVmZjFkZmZkMGMyZmFkZmFlMWE1YmI4MDY0ODU2Yzg5MiJ9fX0=")
                 .name("&eSet &6&lDefault Display Item").lore(lore).ready();
@@ -170,7 +170,7 @@ public class InventoryEditManager {
         lore.add("&7player doesn't have the permissions to");
         lore.add("&7claim it.");
         lore.add("");
-        lore.add("&7Present: "+(kit.getDisplayItemNoPermission() != null ? "&aYES" : "&cNO"));
+        lore.add("&7Present: "+(kitModel.getDisplayItemNoPermission() != null ? "&aYES" : "&cNO"));
         new InventoryItem(inv, 39, headMaterial)
                 .setSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzdkNDk5YTlhZjUyOTllZGE0Y2NkYWMyMDE5ZWZlN2YyNDk2MWYzZTFmY2U3Njk0Y2I2ODIwMjlkMjllOWVhMSJ9fX0=")
                 .name("&eSet &6&lNo Permissions Display Item").lore(lore).ready();
@@ -181,7 +181,7 @@ public class InventoryEditManager {
         lore.add("&7one time option is enabled and the player");
         lore.add("&7has already claimed it.");
         lore.add("");
-        lore.add("&7Present: "+(kit.getDisplayItemOneTime() != null ? "&aYES" : "&cNO"));
+        lore.add("&7Present: "+(kitModel.getDisplayItemOneTime() != null ? "&aYES" : "&cNO"));
         new InventoryItem(inv, 40, headMaterial)
                 .setSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzU3NDc2NmUzZGVjNDkwNGZhNWFhMTU5MjA4ZGFlYzExYzYzYzVlMzI2MTU3YzM2NWViMTY5MDFiNjFmNjQ1YiJ9fX0=")
                 .name("&eSet &6&lOne Time Display Item").lore(lore).ready();
@@ -191,7 +191,7 @@ public class InventoryEditManager {
         lore.add("&7Click to edit the kit display item when");
         lore.add("&7the player is on cooldown.");
         lore.add("");
-        lore.add("&7Present: "+(kit.getDisplayItemCooldown() != null ? "&aYES" : "&cNO"));
+        lore.add("&7Present: "+(kitModel.getDisplayItemCooldown() != null ? "&aYES" : "&cNO"));
         new InventoryItem(inv, 41, headMaterial)
                 .setSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODg3YTc1ZjZjYmNjOGUxN2I4ZmJmYWVlMzM3MGZlZjAyMWMyNWY3MDM1YjI1ZDRjNjU3OTZlZjMzODljZWYwMCJ9fX0=")
                 .name("&eSet &6&lCooldown Display Item").lore(lore).ready();
@@ -203,7 +203,7 @@ public class InventoryEditManager {
         lore.add("&7the player has already accomplished the");
         lore.add("&7requirements.");
         lore.add("");
-        lore.add("&7Present: "+(kit.getDisplayItemOneTimeRequirements() != null ? "&aYES" : "&cNO"));
+        lore.add("&7Present: "+(kitModel.getDisplayItemOneTimeRequirements() != null ? "&aYES" : "&cNO"));
         new InventoryItem(inv, 42, headMaterial)
                 .setSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGU4NmJlNTQ5OWViNDI0NWE0NjFiZGNiODZmZjE2M2M4NTVjMTgyODFmOTcxMDU0MmIxN2ZkMjhiYWU0MjQzYiJ9fX0=")
                 .name("&eSet &6&lOne Time Requirements Display Item").lore(lore).ready();
@@ -214,7 +214,7 @@ public class InventoryEditManager {
         lore.add("");
         lore.add("&7Current Items:");
         int max = 20;
-        for(KitItem kitItem : kit.getItems()){
+        for(KitItem kitItem : kitModel.getItems()){
             lore.add(MessagesManager.getColoredMessage("&8- &fx"+kitItem.getAmount()+" "+kitItem.getId()));
             max--;
             if(max <= 0){
@@ -234,7 +234,7 @@ public class InventoryEditManager {
         lore.add("&7when the player claims the kit.");
         lore.add("");
         lore.add("&7Current Actions:");
-        lore = setActionItemLore(kit.getClaimActions(),lore);
+        lore = setActionItemLore(kitModel.getClaimActions(),lore);
         new InventoryItem(inv, 23, Material.IRON_INGOT).name("&eSet &6&lClaim Actions").lore(lore).ready();
 
         //Set Error Actions
@@ -244,7 +244,7 @@ public class InventoryEditManager {
         lore.add("&7the kit.");
         lore.add("");
         lore.add("&7Current Actions:");
-        lore = setActionItemLore(kit.getErrorActions(),lore);
+        lore = setActionItemLore(kitModel.getErrorActions(),lore);
         new InventoryItem(inv, 24, Material.NETHER_BRICK).name("&eSet &6&lError Actions").lore(lore).ready();
 
         inventoryPlayer.getPlayer().openInventory(inv);
@@ -292,24 +292,24 @@ public class InventoryEditManager {
     }
 
     public void setPermissionRequired(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        kit.setPermissionRequired(!kit.isPermissionRequired());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        kitModel.setPermissionRequired(!kitModel.isPermissionRequired());
         openInventory(inventoryPlayer);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public void setOneTime(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        kit.setOneTime(!kit.isOneTime());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        kitModel.setOneTime(!kitModel.isOneTime());
         openInventory(inventoryPlayer);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public void setAutoArmor(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        kit.setAutoArmor(!kit.isAutoArmor());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        kitModel.setAutoArmor(!kitModel.isAutoArmor());
         openInventory(inventoryPlayer);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public void clickCooldown(InventoryPlayer inventoryPlayer){
@@ -322,15 +322,15 @@ public class InventoryEditManager {
     }
 
     public void setCooldown(InventoryPlayer inventoryPlayer,String message){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         Player player = inventoryPlayer.getPlayer();
         try{
             int cooldown = Integer.parseInt(message);
             if(cooldown >= 0){
-                kit.setCooldown(cooldown);
+                kitModel.setCooldown(cooldown);
                 removeInventoryPlayer(inventoryPlayer.getPlayer());
                 openInventory(inventoryPlayer);
-                plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+                plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
                 return;
             }
         }catch(Exception e){}

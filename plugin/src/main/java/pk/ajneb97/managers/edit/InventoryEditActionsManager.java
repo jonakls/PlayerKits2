@@ -8,10 +8,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 
@@ -60,8 +60,8 @@ public class InventoryEditActionsManager {
         new InventoryItem(inv, 49, Material.COMPASS).name("&6&lInfo").lore(lore).ready();
 
         //Set Actions
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        List<KitAction> actions = getKitActionsFromType(kit,type);
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        List<KitAction> actions = getKitActionsFromType(kitModel,type);
         int slot = 0;
         for(KitAction kitAction : actions){
             String executeBeforeItems = kitAction.isExecuteBeforeItems() ? "&aYES" : "&cNO";
@@ -96,14 +96,14 @@ public class InventoryEditActionsManager {
     }
 
     public void removeAction(InventoryPlayer inventoryPlayer,int slot){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String type = inventoryPlayer.getInventoryName().replace("edit_actions_","");
-        List<KitAction> actions = getKitActionsFromType(kit,type);
+        List<KitAction> actions = getKitActionsFromType(kitModel,type);
         actions.remove(slot);
 
         openInventory(inventoryPlayer,type);
 
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
 
@@ -119,14 +119,14 @@ public class InventoryEditActionsManager {
     }
 
     public void addAction(InventoryPlayer inventoryPlayer,String message){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String type = inventoryPlayer.getInventoryName().replace("edit_chat_add_action_","");
-        List<KitAction> actions = getKitActionsFromType(kit,type);
+        List<KitAction> actions = getKitActionsFromType(kitModel,type);
         actions.add(new KitAction(message,null,false,false));
 
         inventoryEditManager.removeInventoryPlayer(inventoryPlayer.getPlayer());
         openInventory(inventoryPlayer,type);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
 
@@ -145,12 +145,12 @@ public class InventoryEditActionsManager {
         }
     }
 
-    public List<KitAction> getKitActionsFromType(Kit kit, String type) {
+    public List<KitAction> getKitActionsFromType(KitModel kitModel, String type) {
         List<KitAction> actions;
         if(type.equals("claim")){
-            actions = kit.getClaimActions();
+            actions = kitModel.getClaimActions();
         }else{
-            actions = kit.getErrorActions();
+            actions = kitModel.getErrorActions();
         }
         return actions;
     }

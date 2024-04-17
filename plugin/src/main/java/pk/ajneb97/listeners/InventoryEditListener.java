@@ -12,7 +12,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.edit.InventoryEditManager;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
 
 public class InventoryEditListener implements Listener {
 

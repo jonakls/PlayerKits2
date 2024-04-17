@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
 import pk.ajneb97.configs.MainConfigManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.KitRequirements;
-import pk.ajneb97.api.model.internal.GiveKitInstructions;
-import pk.ajneb97.api.model.internal.PlayerKitsMessageResult;
-import pk.ajneb97.api.model.inventory.KitInventory;
-import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.kit.KitRequirements;
+import pk.ajneb97.api.model.kit.GiveKitInstructions;
+import pk.ajneb97.api.model.player.PlayerKitsMessageResult;
+import pk.ajneb97.api.model.gui.KitInventory;
+import pk.ajneb97.api.model.kit.item.KitItem;
 import pk.ajneb97.utils.ActionUtils;
 import pk.ajneb97.utils.OtherUtils;
 import pk.ajneb97.api.utils.PlayerUtils;
@@ -26,7 +26,7 @@ import java.util.List;
 public class KitsManager {
 
     private PlayerKits2 plugin;
-    private ArrayList<Kit> kits;
+    private ArrayList<KitModel> kitModels;
 
     public KitsManager(PlayerKits2 plugin) {
         this.plugin = plugin;
@@ -40,38 +40,38 @@ public class KitsManager {
         this.plugin = plugin;
     }
 
-    public ArrayList<Kit> getKits() {
-        return kits;
+    public ArrayList<KitModel> getKits() {
+        return kitModels;
     }
 
-    public void setKits(ArrayList<Kit> kits) {
-        this.kits = kits;
+    public void setKits(ArrayList<KitModel> kitModels) {
+        this.kitModels = kitModels;
     }
 
-    public Kit getKitByName(String name) {
-        for (Kit kit : kits) {
-            if (kit.getName().equals(name)) {
-                return kit;
+    public KitModel getKitByName(String name) {
+        for (KitModel kitModel : kitModels) {
+            if (kitModel.getName().equals(name)) {
+                return kitModel;
             }
         }
         return null;
     }
 
     public void removeKit(String name) {
-        for (int i = 0; i < kits.size(); i++) {
-            if (kits.get(i).getName().equals(name)) {
-                kits.remove(i);
+        for (int i = 0; i < kitModels.size(); i++) {
+            if (kitModels.get(i).getName().equals(name)) {
+                kitModels.remove(i);
                 return;
             }
         }
     }
 
     public void createKit(String kitName, Player player) {
-        Kit kit = getKitByName(kitName);
+        KitModel kitModel = getKitByName(kitName);
         FileConfiguration messagesFile = plugin.getConfigsManager().getMessagesConfigManager().getConfig();
         MainConfigManager mainConfigManager = plugin.getConfigsManager().getMainConfigManager();
         MessagesManager msgManager = plugin.getMessagesManager();
-        if (kit != null) {
+        if (kitModel != null) {
             msgManager.sendMessage(player, messagesFile.getString("kitAlreadyExists").replace("%kit%", kitName), true);
             return;
         }
@@ -100,19 +100,19 @@ public class KitsManager {
             items.add(kitItem);
         }
 
-        if (items.size() == 0) {
+        if (items.isEmpty()) {
             msgManager.sendMessage(player, messagesFile.getString("inventoryEmpty"), true);
             return;
         }
 
         //Set defaults
-        kit = new Kit(kitName);
-        kit.setItems(items);
-        kit.setDefaults(mainConfigManager.getNewKitDefault());
-        kit.setAutoArmor(hasArmor);
+        kitModel = new KitModel(kitName);
+        kitModel.setItems(items);
+        kitModel.setDefaults(mainConfigManager.getNewKitDefault());
+        kitModel.setAutoArmor(hasArmor);
 
-        kits.add(kit);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        kitModels.add(kitModel);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
 
         msgManager.sendMessage(player, messagesFile.getString("kitCreated").replace("%kit%", kitName), true);
 
@@ -151,50 +151,50 @@ public class KitsManager {
     }
 
     public PlayerKitsMessageResult giveKit(Player player, String kitName, GiveKitInstructions giveKitInstructions) {
-        Kit kit = getKitByName(kitName);
+        KitModel kitModel = getKitByName(kitName);
         FileConfiguration messagesFile = plugin.getConfigsManager().getMessagesConfigManager().getConfig();
         FileConfiguration configFile = plugin.getConfigsManager().getMainConfigManager().getConfig();
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
         MessagesManager msgManager = plugin.getMessagesManager();
 
-        if (kit == null) {
+        if (kitModel == null) {
             return PlayerKitsMessageResult.error(messagesFile.getString("kitDoesNotExists").replace("%kit%", kitName));
         }
 
         //Check properties
         if (!giveKitInstructions.isFromCommand()) {
             //Permission
-            if (!giveKitInstructions.isIgnorePermission() && !kit.playerHasPermission(player)) {
-                sendKitActions(kit.getErrorActions(), player, false);
+            if (!giveKitInstructions.isIgnorePermission() && !kitModel.playerHasPermission(player)) {
+                sendKitActions(kitModel.getErrorActions(), player, false);
                 return PlayerKitsMessageResult.error(messagesFile.getString("kitNoPermissions"));
             }
 
             //One time
-            if (kit.isOneTime() && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasOneTimeBypassPermission(player)
-                    && playerDataManager.isKitOneTime(player, kit.getName())) {
-                sendKitActions(kit.getErrorActions(), player, false);
+            if (kitModel.isOneTime() && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasOneTimeBypassPermission(player)
+                    && playerDataManager.isKitOneTime(player, kitModel.getName())) {
+                sendKitActions(kitModel.getErrorActions(), player, false);
                 return PlayerKitsMessageResult.error(messagesFile.getString("oneTimeError"));
             }
 
             //Cooldown
-            long playerCooldown = playerDataManager.getKitCooldown(player, kit.getName());
-            if (kit.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasCooldownBypassPermission(player)) {
+            long playerCooldown = playerDataManager.getKitCooldown(player, kitModel.getName());
+            if (kitModel.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasCooldownBypassPermission(player)) {
                 long currentMillis = System.currentTimeMillis();
                 long millisDif = playerCooldown - currentMillis;
                 //String timeStringMillisDif = OtherUtils.getTime(millisDif / 1000, msgManager);
                 String timeStringMillisDif = OtherUtils.getTime(millisDif, msgManager);
                 if (!timeStringMillisDif.isEmpty()) {
-                    sendKitActions(kit.getErrorActions(), player, false);
+                    sendKitActions(kitModel.getErrorActions(), player, false);
                     return PlayerKitsMessageResult.error(messagesFile.getString("cooldownError")
                             .replace("%time%", timeStringMillisDif));
                 }
             }
 
             //Requirements - Buy
-            KitRequirements kitRequirements = kit.getRequirements();
+            KitRequirements kitRequirements = kitModel.getRequirements();
             if (!giveKitInstructions.isIgnoreRequirements() && kitRequirements != null &&
                     (kitRequirements.getPrice() != 0 || !kitRequirements.getExtraRequirements().isEmpty())) {
-                if (!(kitRequirements.isOneTimeRequirements() && playerDataManager.isKitBought(player, kit.getName()))) {
+                if (!(kitRequirements.isOneTimeRequirements() && playerDataManager.isKitBought(player, kitModel.getName()))) {
                     if (!giveKitInstructions.isRequirementsSatisfied()) {
                         //Player must buy it first
                         PlayerKitsMessageResult result = PlayerKitsMessageResult.success();
@@ -204,7 +204,7 @@ public class KitsManager {
 
                     //Check price
                     if (!passPrice(kitRequirements.getPrice(), player)) {
-                        sendKitActions(kit.getErrorActions(), player, false);
+                        sendKitActions(kitModel.getErrorActions(), player, false);
                         return PlayerKitsMessageResult.error(messagesFile.getString("requirementsError"));
                     }
                     //Check requirements
@@ -213,7 +213,7 @@ public class KitsManager {
                         for (String condition : requirementsConditions) {
                             boolean passCondition = pk.ajneb97.utils.PlayerUtils.passCondition(player, condition);
                             if (!passCondition) {
-                                sendKitActions(kit.getErrorActions(), player, false);
+                                sendKitActions(kitModel.getErrorActions(), player, false);
                                 return PlayerKitsMessageResult.error(messagesFile.getString("requirementsError"));
                             }
                         }
@@ -224,7 +224,7 @@ public class KitsManager {
 
 
         KitItemManager kitItemManager = plugin.getKitItemManager();
-        List<KitItem> items = kit.getItems();
+        List<KitItem> items = kitModel.getItems();
 
         //Check amount of free slots, including auto-armor
         int usedSlots = PlayerUtils.getUsedSlots(player);
@@ -239,7 +239,7 @@ public class KitsManager {
 
         PlayerInventory playerInventory = player.getInventory();
         for (KitItem item : items) {
-            if (kit.isAutoArmor()) {
+            if (kitModel.isAutoArmor()) {
                 String id = item.getId();
 
                 //Check if the item must be put in the player equipment
@@ -270,7 +270,7 @@ public class KitsManager {
 
             inventoryKitItems++;
         }
-        List<KitAction> claimActions = kit.getClaimActions();
+        List<KitAction> claimActions = kitModel.getClaimActions();
         for (KitAction action : claimActions) {
             if (action.isCountAsItem()) {
                 inventoryKitItems++;
@@ -282,12 +282,12 @@ public class KitsManager {
         boolean dropItemsIfFullInventory = configFile.getBoolean("drop_items_if_full_inventory");
 
         if (enoughSpace && !dropItemsIfFullInventory) {
-            sendKitActions(kit.getErrorActions(), player, false);
+            sendKitActions(kitModel.getErrorActions(), player, false);
             return PlayerKitsMessageResult.error(messagesFile.getString("noSpaceError"));
         }
 
         //Actions before
-        sendKitActions(kit.getClaimActions(), player, true);
+        sendKitActions(kitModel.getClaimActions(), player, true);
 
         //Give kit items
         for (KitItem kitItem : items) {
@@ -313,23 +313,23 @@ public class KitsManager {
         }
 
         //Actions after
-        sendKitActions(kit.getClaimActions(), player, false);
+        sendKitActions(kitModel.getClaimActions(), player, false);
 
         //Update properties
         if (!giveKitInstructions.isFromCommand()) {
             //One time
-            if (kit.isOneTime() && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasOneTimeBypassPermission(player)) {
-                playerDataManager.setKitOneTime(player, kit.getName());
+            if (kitModel.isOneTime() && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasOneTimeBypassPermission(player)) {
+                playerDataManager.setKitOneTime(player, kitModel.getName());
             }
 
             //Cooldown
-            if (kit.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasCooldownBypassPermission(player)) {
-                long millisMax = System.currentTimeMillis() + (kit.getCooldown() * 1000L);
-                playerDataManager.setKitCooldown(player, kit.getName(), millisMax);
+            if (kitModel.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player) && !PlayerUtils.hasCooldownBypassPermission(player)) {
+                long millisMax = System.currentTimeMillis() + (kitModel.getCooldown() * 1000L);
+                playerDataManager.setKitCooldown(player, kitModel.getName(), millisMax);
             }
 
             //Requirements - Buy
-            KitRequirements kitRequirements = kit.getRequirements();
+            KitRequirements kitRequirements = kitModel.getRequirements();
             if (!giveKitInstructions.isIgnoreRequirements() && kitRequirements != null && giveKitInstructions.isRequirementsSatisfied()) {
                 //Check price and update balance
                 double price = kitRequirements.getPrice();

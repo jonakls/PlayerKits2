@@ -1,7 +1,7 @@
 package pk.ajneb97.managers;
 
 
-import pk.ajneb97.api.model.internal.UpdateCheckerResult;
+import pk.ajneb97.model.internal.UpdateCheckerResult;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

@@ -8,13 +8,13 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
 import pk.ajneb97.managers.KitItemManager;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
-import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
+import pk.ajneb97.api.model.kit.item.KitItem;
 import pk.ajneb97.utils.InventoryItem;
-import pk.ajneb97.api.utils.ItemUtils;
+import pk.ajneb97.utils.ItemUtils;
 import pk.ajneb97.utils.OtherUtils;
 
 import java.util.ArrayList;
@@ -64,8 +64,8 @@ public class InventoryEditKitItemsManager {
         new InventoryItem(inv, 49, Material.COMPASS).name("&6&lInfo").lore(lore).ready();
 
         //Kit Items
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        List<KitItem> items = kit.getItems();
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        List<KitItem> items = kitModel.getItems();
         KitItemManager kitItemManager = plugin.getKitItemManager();
         int slot = 0;
         for(KitItem kitItem : items){
@@ -149,7 +149,7 @@ public class InventoryEditKitItemsManager {
     public void saveKitItems(InventoryPlayer inventoryPlayer){
         Inventory inv = inventoryPlayer.getPlayer().getOpenInventory().getTopInventory();
         if(inv != null) {
-            Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+            KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
             KitItemManager kitItemManager = plugin.getKitItemManager();
             ArrayList<KitItem> kitItems = new ArrayList<>();
             ItemStack[] contents = inv.getContents();
@@ -173,8 +173,8 @@ public class InventoryEditKitItemsManager {
                 kitItems.add(kitItem);
             }
 
-            kit.setItems(kitItems);
-            plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+            kitModel.setItems(kitItems);
+            plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
         }
     }
 

@@ -2,7 +2,7 @@ package pk.ajneb97.versions;
 
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.api.utils.ServerVersion;
+import pk.ajneb97.utils.ServerVersion;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;

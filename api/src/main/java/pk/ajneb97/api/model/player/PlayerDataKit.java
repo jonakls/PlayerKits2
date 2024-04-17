@@ -1,6 +1,8 @@
 package pk.ajneb97.api.model.player;
 
-public class PlayerDataKit {
+import pk.ajneb97.api.model.Model;
+
+public class PlayerDataKit implements Model {
 
     private String name;
     private long cooldown; //Cooldown calculated
@@ -44,5 +46,10 @@ public class PlayerDataKit {
 
     public void setBought(boolean bought) {
         this.bought = bought;
+    }
+
+    @Override
+    public String id() {
+        return this.name;
     }
 }

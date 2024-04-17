@@ -13,13 +13,13 @@ import pk.ajneb97.managers.InventoryManager;
 import pk.ajneb97.managers.KitItemManager;
 import pk.ajneb97.managers.KitsManager;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.internal.KitVariable;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
-import pk.ajneb97.api.model.inventory.ItemKitInventory;
-import pk.ajneb97.api.model.inventory.KitInventory;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.model.gui.KitVariable;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
+import pk.ajneb97.api.model.gui.ItemKitInventory;
+import pk.ajneb97.api.model.gui.KitInventory;
 import pk.ajneb97.utils.InventoryItem;
-import pk.ajneb97.api.utils.ItemUtils;
+import pk.ajneb97.utils.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +49,11 @@ public class InventoryEditPositionManager {
                 if(type != null){
                     if(type.startsWith("kit: ")){
                         String kitName = type.replace("kit: ","");
-                        Kit kit = kitsManager.getKitByName(kitName);
-                        if(kit == null){
+                        KitModel kitModel = kitsManager.getKitByName(kitName);
+                        if(kitModel == null){
                             continue;
                         }
-                        ItemStack item = kitItemManager.createItemFromKitItem(kit.getDisplayItemDefault(),null);
+                        ItemStack item = kitItemManager.createItemFromKitItem(kitModel.getDisplayItemDefault(),null);
                         //Check if it is the same kit
                         if(kitName.equals(inventoryPlayer.getKitName())){
                             ItemMeta meta = item.getItemMeta();
@@ -71,7 +71,7 @@ public class InventoryEditPositionManager {
                         }
 
                         ArrayList<KitVariable> variablesToReplace = new ArrayList<>();
-                        variablesToReplace.add(new KitVariable("%kit_name%",kit.getName()));
+                        variablesToReplace.add(new KitVariable("%kit_name%", kitModel.getName()));
                         kitItemManager.replaceVariables(item,variablesToReplace);
 
                         inv.setItem(slot,item);

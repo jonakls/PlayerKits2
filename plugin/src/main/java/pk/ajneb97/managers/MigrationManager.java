@@ -4,14 +4,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitRunnable;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.api.model.*;
-import pk.ajneb97.api.model.player.PlayerData;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.kit.KitRequirements;
+import pk.ajneb97.api.model.player.PlayerModel;
 import pk.ajneb97.api.model.player.PlayerDataKit;
 import pk.ajneb97.configs.KitsConfigManager;
 import pk.ajneb97.configs.PlayersConfigManager;
-import pk.ajneb97.model.*;
-import pk.ajneb97.api.model.item.KitItem;
-import pk.ajneb97.api.model.item.KitItemSkullData;
+import pk.ajneb97.api.model.kit.item.KitItem;
+import pk.ajneb97.api.model.kit.item.KitItemSkullData;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,13 +47,13 @@ public class MigrationManager {
 
         KitItemManager kitItemManager = plugin.getKitItemManager();
         YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-        Kit defaultValues = plugin.getConfigsManager().getMainConfigManager().getNewKitDefault();
+        KitModel defaultValues = plugin.getConfigsManager().getMainConfigManager().getNewKitDefault();
         KitsConfigManager kitsConfigManager = plugin.getConfigsManager().getKitsConfigManager();
         if(config.contains("Kits")){
             for(String kitName : config.getConfigurationSection("Kits").getKeys(false)){
                 try{
                     String path = "Kits."+kitName;
-                    Kit kit = new Kit(kitName);
+                    KitModel kitModel = new KitModel(kitName);
 
                     boolean oneTime = config.contains(path+".one_time") ? config.getBoolean(path+".one_time") : false;
                     int cooldown = config.contains(path+".cooldown") ? config.getInt(path+".cooldown") : 0;
@@ -83,23 +84,23 @@ public class MigrationManager {
                         kitRequirements.setOneTimeRequirements(oneTimeBuy);
                     }
 
-                    kit.setDisplayItemDefault(getDisplayItem(config,path));
+                    kitModel.setDisplayItemDefault(getDisplayItem(config,path));
                     if(config.contains(path+".noPermissionsItem")){
-                        kit.setDisplayItemNoPermission(getDisplayItem(config,path+".noPermissionsItem"));
+                        kitModel.setDisplayItemNoPermission(getDisplayItem(config,path+".noPermissionsItem"));
                     }
-                    kit.setDisplayItemCooldown(defaultValues.getDisplayItemCooldown());
-                    kit.setDisplayItemOneTime(defaultValues.getDisplayItemOneTime());
-                    kit.setCooldown(cooldown);
-                    kit.setAutoArmor(autoArmor);
-                    kit.setOneTime(oneTime);
-                    kit.setPermissionRequired(permissionRequired);
-                    kit.setItems(items);
-                    kit.setClaimActions(claimActions);
-                    kit.setErrorActions(new ArrayList<>());
+                    kitModel.setDisplayItemCooldown(defaultValues.getDisplayItemCooldown());
+                    kitModel.setDisplayItemOneTime(defaultValues.getDisplayItemOneTime());
+                    kitModel.setCooldown(cooldown);
+                    kitModel.setAutoArmor(autoArmor);
+                    kitModel.setOneTime(oneTime);
+                    kitModel.setPermissionRequired(permissionRequired);
+                    kitModel.setItems(items);
+                    kitModel.setClaimActions(claimActions);
+                    kitModel.setErrorActions(new ArrayList<>());
 
-                    kit.setRequirements(kitRequirements);
+                    kitModel.setRequirements(kitRequirements);
 
-                    kitsConfigManager.saveConfig(kit);
+                    kitsConfigManager.saveConfig(kitModel);
 
                     sender.sendMessage(PlayerKits2.prefix+MessagesManager.getColoredMessage(" &aKit &7"+kitName+" &amigrated."));
                 }catch(Exception e){
@@ -133,7 +134,7 @@ public class MigrationManager {
                 try {
                     String path = "Players."+uuid;
                     String name = config.getString(path+".name");
-                    PlayerData playerData = new PlayerData(name,uuid);
+                    PlayerModel playerModel = new PlayerModel(name,uuid);
                     for(String kitName : config.getConfigurationSection(path).getKeys(false)){
                         if(kitName.equals("name")){
                            continue;
@@ -143,10 +144,10 @@ public class MigrationManager {
                         playerDataKit.setBought(config.getBoolean(path+"."+kitName+".buyed"));
                         playerDataKit.setCooldown(config.getLong(path+"."+kitName+".cooldown"));
                         playerDataKit.setOneTime(config.getBoolean(path+"."+kitName+".one_time"));
-                        playerData.addKit(playerDataKit);
+                        playerModel.addKit(playerDataKit);
                     }
 
-                    playersConfigManager.saveConfig(playerData);
+                    playersConfigManager.saveConfig(playerModel);
 
                     sender.sendMessage(PlayerKits2.prefix+MessagesManager.getColoredMessage(" &aPlayer &7"+name+" &amigrated."));
                 } catch (Exception e) {

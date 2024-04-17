@@ -2,11 +2,12 @@ package pk.ajneb97.api;
 
 import org.bukkit.entity.Player;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.utils.PlayerUtils;
 import pk.ajneb97.managers.MessagesManager;
 import pk.ajneb97.managers.PlayerDataManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.utils.PlayerUtils;
 
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class PlayerKitsAPI {
 
     private static PlayerKits2 plugin;
@@ -15,16 +16,16 @@ public class PlayerKitsAPI {
     }
 
     public static String getKitCooldown(Player player, String kitName){
-        Kit kit = plugin.getKitsManager().getKitByName(kitName);
+        KitModel kitModel = plugin.getKitsManager().getKitByName(kitName);
         MessagesManager messagesManager = plugin.getMessagesManager();
 
-        if(kit == null){
+        if(kitModel == null){
             return null;
         }
 
         PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
-        long playerCooldown = playerDataManager.getKitCooldown(player,kit.getName());
-        if(kit.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player)){
+        long playerCooldown = playerDataManager.getKitCooldown(player, kitModel.getName());
+        if(kitModel.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player)){
             String timeStringMillisDif = playerDataManager.getKitCooldownString(playerCooldown);
             if(!timeStringMillisDif.isEmpty()) {
                 return timeStringMillisDif;
@@ -35,8 +36,8 @@ public class PlayerKitsAPI {
     }
 
     public static String getOneTimeReady(Player player, String kitName){
-        Kit kit = plugin.getKitsManager().getKitByName(kitName);
-        if(kit == null){
+        KitModel kitModel = plugin.getKitsManager().getKitByName(kitName);
+        if(kitModel == null){
             return null;
         }
 

@@ -7,10 +7,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitRequirements;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.kit.KitRequirements;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
 import pk.ajneb97.utils.InventoryItem;
 
 import java.util.ArrayList;
@@ -32,8 +32,8 @@ public class InventoryEditRequirementsManager {
         //Set Go Back
         new InventoryItem(inv, 18, Material.ARROW).name("&eGo Back").ready();
 
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        KitRequirements kitRequirements = kit.getRequirements();
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitRequirements kitRequirements = kitModel.getRequirements();
 
         //Set Price
         List<String> lore = new ArrayList<String>();
@@ -74,15 +74,15 @@ public class InventoryEditRequirementsManager {
     }
 
     public void setOneTimeRequirements(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        KitRequirements kitRequirements = kit.getRequirements();
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitRequirements kitRequirements = kitModel.getRequirements();
         if(kitRequirements == null){
             kitRequirements = new KitRequirements();
-            kit.setRequirements(kitRequirements);
+            kitModel.setRequirements(kitRequirements);
         }
         kitRequirements.setOneTimeRequirements(!kitRequirements.isOneTimeRequirements());
         openInventory(inventoryPlayer);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public void clickPrice(InventoryPlayer inventoryPlayer){
@@ -95,20 +95,20 @@ public class InventoryEditRequirementsManager {
     }
 
     public void setPrice(InventoryPlayer inventoryPlayer,String message){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         Player player = inventoryPlayer.getPlayer();
         try{
             double price = Double.parseDouble(message);
             if(price >= 0){
-                KitRequirements kitRequirements = kit.getRequirements();
+                KitRequirements kitRequirements = kitModel.getRequirements();
                 if(kitRequirements == null){
                     kitRequirements = new KitRequirements();
-                    kit.setRequirements(kitRequirements);
+                    kitModel.setRequirements(kitRequirements);
                 }
                 kitRequirements.setPrice(price);
                 inventoryEditManager.removeInventoryPlayer(inventoryPlayer.getPlayer());
                 openInventory(inventoryPlayer);
-                plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+                plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
                 return;
             }
         }catch(Exception e){}

@@ -1,0 +1,25 @@
+[versions]
+paper = "1.20.4-R0.1-SNAPSHOT"
+placeholder = "2.11.1"
+vault = "1.7"
+mojang = "1.5.25"
+miniplaceholder = "2.2.3"
+hikari = "4.0.3"
+nmessage = "7.1.3"
+
+[libraries]
+paper = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
+placeholder = { module = "me.clip:placeholderapi", version.ref = "placeholder" }
+vault = { module = "com.github.MilkBowl:VaultAPI", version.ref = "vault" }
+mojang = { module = "com.mojang:authlib", version.ref = "mojang" }
+miniplaceholder = { module = "io.github.miniplaceholders:miniplaceholders-api", version.ref = "miniplaceholder" }
+
+nmessageCore = { module = "me.yushust.message:core", version.ref = "nmessage" }
+sourcetypeBukkit = { module = "me.yushust.message:sourcetype-bukkit-yml", version.ref = "nmessage" }
+hikari = { module = "com.zaxxer:HikariCP", version.ref = "hikari" }
+
+[plugins]
+shadow = { id = "com.github.johnrengelman.shadow", version = "8.1.1" }
+
+[bundles]
+nmessage = [ "nmessageCore", "sourcetypeBukkit" ]

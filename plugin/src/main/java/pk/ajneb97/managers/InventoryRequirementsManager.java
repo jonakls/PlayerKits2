@@ -6,11 +6,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitRequirements;
-import pk.ajneb97.api.model.internal.GiveKitInstructions;
-import pk.ajneb97.api.model.internal.PlayerKitsMessageResult;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.model.kit.KitRequirements;
+import pk.ajneb97.api.model.kit.GiveKitInstructions;
+import pk.ajneb97.api.model.player.PlayerKitsMessageResult;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
 import pk.ajneb97.api.utils.PlayerUtils;
 
 import java.util.ArrayList;
@@ -45,8 +45,8 @@ public class InventoryRequirementsManager {
     }
 
     public List<String> replaceRequirementsMessageVariable(String kitName, Player player){
-        Kit kit = plugin.getKitsManager().getKitByName(kitName);
-        KitRequirements requirements = kit.getRequirements();
+        KitModel kitModel = plugin.getKitsManager().getKitByName(kitName);
+        KitRequirements requirements = kitModel.getRequirements();
 
         MessagesManager msgManager = plugin.getMessagesManager();
         List<String> requirementsMessage = new ArrayList<>(requirements.getMessage());
@@ -97,8 +97,8 @@ public class InventoryRequirementsManager {
     }
 
     public void requirementsInventoryBuy(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        KitRequirements requirements = kit.getRequirements();
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitRequirements requirements = kitModel.getRequirements();
         DependencyManager dependencyManager = plugin.getDependencyManager();
         boolean isPlaceholderAPI = dependencyManager.isPlaceholderAPI();
         Player player = inventoryPlayer.getPlayer();

@@ -2,13 +2,13 @@ package pk.ajneb97.managers;
 
 import org.bukkit.entity.Player;
 import pk.ajneb97.PlayerKits2;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.inventory.ItemKitInventory;
-import pk.ajneb97.api.model.inventory.KitInventory;
-import pk.ajneb97.api.model.item.KitItem;
-import pk.ajneb97.api.model.verify.*;
-import pk.ajneb97.api.utils.ItemUtils;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.gui.ItemKitInventory;
+import pk.ajneb97.api.model.gui.KitInventory;
+import pk.ajneb97.api.model.kit.item.KitItem;
+import pk.ajneb97.model.verify.*;
+import pk.ajneb97.utils.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,9 +43,9 @@ public class VerifyManager {
         this.criticalErrors = false;
 
         //CHECK KITS
-        ArrayList<Kit> kits = plugin.getKitsManager().getKits();
-        for(Kit kit : kits) {
-            verifyKit(kit);
+        ArrayList<KitModel> kitModels = plugin.getKitsManager().getKits();
+        for(KitModel kitModel : kitModels) {
+            verifyKit(kitModel);
         }
 
         //CHECK INVENTORIES
@@ -68,33 +68,33 @@ public class VerifyManager {
         }
     }
 
-    public void verifyKit(Kit kit) {
-        String kitName = kit.getName();
-        if(kit.getDisplayItemDefault() == null || kit.getDisplayItemDefault().getId() == null){
+    public void verifyKit(KitModel kitModel) {
+        String kitName = kitModel.getName();
+        if(kitModel.getDisplayItemDefault() == null || kitModel.getDisplayItemDefault().getId() == null){
             errors.add(new PKKitDisplayItemError(kitName+".yml",null,true,kitName));
             criticalErrors = true;
         }
-        verifyActions(kit.getClaimActions(),"claim",kitName);
-        verifyActions(kit.getErrorActions(),"error",kitName);
+        verifyActions(kitModel.getClaimActions(),"claim",kitName);
+        verifyActions(kitModel.getErrorActions(),"error",kitName);
 
         //Items
         ArrayList<KitItem> allKitItems = new ArrayList<KitItem>();
-        allKitItems.add(kit.getDisplayItemDefault());
-        allKitItems.add(kit.getDisplayItemCooldown());
-        allKitItems.add(kit.getDisplayItemNoPermission());
-        allKitItems.add(kit.getDisplayItemOneTime());
-        allKitItems.add(kit.getDisplayItemOneTimeRequirements());
-        allKitItems.addAll(kit.getItems());
-        for(KitAction kitAction : kit.getClaimActions()){
+        allKitItems.add(kitModel.getDisplayItemDefault());
+        allKitItems.add(kitModel.getDisplayItemCooldown());
+        allKitItems.add(kitModel.getDisplayItemNoPermission());
+        allKitItems.add(kitModel.getDisplayItemOneTime());
+        allKitItems.add(kitModel.getDisplayItemOneTimeRequirements());
+        allKitItems.addAll(kitModel.getItems());
+        for(KitAction kitAction : kitModel.getClaimActions()){
             allKitItems.add(kitAction.getDisplayItem());
         }
-        for(KitAction kitAction : kit.getErrorActions()){
+        for(KitAction kitAction : kitModel.getErrorActions()){
             allKitItems.add(kitAction.getDisplayItem());
         }
         for(KitItem kitItem : allKitItems){
             if(kitItem != null){
                 if(!verifyItem(kitItem.getId())){
-                    errors.add(new PKInvalidItem(kit.getName()+".yml",null,true,kitItem.getId()));
+                    errors.add(new PKInvalidItem(kitModel.getName()+".yml",null,true,kitItem.getId()));
                     criticalErrors = true;
                 }
             }

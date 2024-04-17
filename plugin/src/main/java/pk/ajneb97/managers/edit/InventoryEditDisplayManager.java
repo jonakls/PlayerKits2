@@ -7,11 +7,11 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
-import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
+import pk.ajneb97.api.model.kit.item.KitItem;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 
@@ -64,8 +64,8 @@ public class InventoryEditDisplayManager {
                 .setSkull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmQ2OWUwNmU1ZGFkZmQ4NGU1ZjNkMWMyMTA2M2YyNTUzYjJmYTk0NWVlMWQ0ZDcxNTJmZGM1NDI1YmMxMmE5In19fQ==")
                 .name("&6<< Place item here").lore(lore).ready();
 
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        KitItem kitItem = getKitDisplayItemFromType(kit,type);
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitItem kitItem = getKitDisplayItemFromType(kitModel,type);
 
         //Set Info Item
         lore = new ArrayList<>();
@@ -113,25 +113,25 @@ public class InventoryEditDisplayManager {
                 kitItem = plugin.getKitItemManager().createKitItemFromItemStack(item);
             }
 
-            Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+            KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
             String type = inventoryPlayer.getInventoryName().replace("edit_display_","");
             if(type.equals("permission")){
-                kit.setDisplayItemNoPermission(kitItem);
+                kitModel.setDisplayItemNoPermission(kitItem);
             }else if(type.equals("onetime")){
-                kit.setDisplayItemOneTime(kitItem);
+                kitModel.setDisplayItemOneTime(kitItem);
             }else if(type.equals("cooldown")){
-                kit.setDisplayItemCooldown(kitItem);
+                kitModel.setDisplayItemCooldown(kitItem);
             }else if(type.equals("requirements")){
-                kit.setDisplayItemOneTimeRequirements(kitItem);
+                kitModel.setDisplayItemOneTimeRequirements(kitItem);
             }else if(type.startsWith("action")){
                 String actionType = type.split("_")[1];
                 int actionSlot = Integer.parseInt(type.split("_")[2]);
-                KitAction kitAction = getKitActionsFromType(kit,actionType).get(actionSlot);
+                KitAction kitAction = getKitActionsFromType(kitModel,actionType).get(actionSlot);
                 kitAction.setDisplayItem(kitItem);
             }else{
-                kit.setDisplayItemDefault(kitItem);
+                kitModel.setDisplayItemDefault(kitItem);
             }
-            plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+            plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
         }
     }
 
@@ -162,34 +162,34 @@ public class InventoryEditDisplayManager {
         }
     }
 
-    public KitItem getKitDisplayItemFromType(Kit kit, String type){
+    public KitItem getKitDisplayItemFromType(KitModel kitModel, String type){
         if(type.startsWith("action")){
             String actionType = type.split("_")[1];
             int actionSlot = Integer.parseInt(type.split("_")[2]);
-            KitAction kitAction = getKitActionsFromType(kit,actionType).get(actionSlot);
+            KitAction kitAction = getKitActionsFromType(kitModel,actionType).get(actionSlot);
             return kitAction.getDisplayItem();
         }else{
-            KitItem kitItem = kit.getDisplayItemDefault();
+            KitItem kitItem = kitModel.getDisplayItemDefault();
             switch(type){
                 case "permission":
-                    return kit.getDisplayItemNoPermission();
+                    return kitModel.getDisplayItemNoPermission();
                 case "onetime":
-                    return kit.getDisplayItemOneTime();
+                    return kitModel.getDisplayItemOneTime();
                 case "cooldown":
-                    return kit.getDisplayItemCooldown();
+                    return kitModel.getDisplayItemCooldown();
                 case "requirements":
-                    return kit.getDisplayItemOneTimeRequirements();
+                    return kitModel.getDisplayItemOneTimeRequirements();
             }
             return kitItem;
         }
     }
 
-    public List<KitAction> getKitActionsFromType(Kit kit, String type) {
+    public List<KitAction> getKitActionsFromType(KitModel kitModel, String type) {
         List<KitAction> actions;
         if(type.equals("claim")){
-            actions = kit.getClaimActions();
+            actions = kitModel.getClaimActions();
         }else{
-            actions = kit.getErrorActions();
+            actions = kitModel.getErrorActions();
         }
         return actions;
     }

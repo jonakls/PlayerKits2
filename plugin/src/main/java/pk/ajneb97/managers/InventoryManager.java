@@ -9,17 +9,17 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.configs.MainConfigManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.internal.GiveKitInstructions;
-import pk.ajneb97.api.model.internal.KitPosition;
-import pk.ajneb97.api.model.internal.KitVariable;
-import pk.ajneb97.api.model.internal.PlayerKitsMessageResult;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
-import pk.ajneb97.api.model.inventory.ItemKitInventory;
-import pk.ajneb97.api.model.inventory.KitInventory;
-import pk.ajneb97.api.model.item.KitItem;
-import pk.ajneb97.api.utils.ItemUtils;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.kit.GiveKitInstructions;
+import pk.ajneb97.api.model.gui.KitPosition;
+import pk.ajneb97.api.model.gui.KitVariable;
+import pk.ajneb97.api.model.player.PlayerKitsMessageResult;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
+import pk.ajneb97.api.model.gui.ItemKitInventory;
+import pk.ajneb97.api.model.gui.KitInventory;
+import pk.ajneb97.api.model.kit.item.KitItem;
+import pk.ajneb97.utils.ItemUtils;
 import pk.ajneb97.api.utils.PlayerUtils;
 
 import java.util.ArrayList;
@@ -148,15 +148,15 @@ public class InventoryManager {
         KitItemManager kitItemManager = plugin.getKitItemManager();
         KitsManager kitsManager = plugin.getKitsManager();
 
-        Kit kit = kitsManager.getKitByName(inventoryPlayer.getKitName());
-        if(kit == null){
+        KitModel kitModel = kitsManager.getKitByName(inventoryPlayer.getKitName());
+        if(kitModel == null){
             return;
         }
 
         // Create a list with all items including actions display items
         ArrayList<KitItem> allItems = new ArrayList<>();
-        allItems.addAll(kit.getItems());
-        for(KitAction kitAction : kit.getClaimActions()){
+        allItems.addAll(kitModel.getItems());
+        for(KitAction kitAction : kitModel.getClaimActions()){
             KitItem kitItem = kitAction.getDisplayItem();
             if(kitItem != null){
                 allItems.add(kitItem);
@@ -223,9 +223,9 @@ public class InventoryManager {
                 return;
             }
 
-            Kit kit = plugin.getKitsManager().getKitByName(kitName);
-            if(kit.isPermissionRequired()){
-                if(mainConfigManager.isKitPreviewRequiresKitPermission() && !kit.playerHasPermission(player)){
+            KitModel kitModel = plugin.getKitsManager().getKitByName(kitName);
+            if(kitModel.isPermissionRequired()){
+                if(mainConfigManager.isKitPreviewRequiresKitPermission() && !kitModel.playerHasPermission(player)){
                     msgManager.sendMessage(player,messagesConfig.getString("cantPreviewError"),true);
                     return;
                 }
@@ -289,41 +289,41 @@ public class InventoryManager {
 
     public void setKit(String kitName, Player player, Inventory inv, int slot, KitsManager kitsManager, PlayerDataManager playerDataManager
         ,KitItemManager kitItemManager,MessagesManager msgManager){
-        Kit kit = kitsManager.getKitByName(kitName);
-        if(kit == null){
+        KitModel kitModel = kitsManager.getKitByName(kitName);
+        if(kitModel == null){
             return;
         }
 
         ArrayList<KitVariable> variablesToReplace = new ArrayList<>();
-        variablesToReplace.add(new KitVariable("%kit_name%",kit.getName()));
+        variablesToReplace.add(new KitVariable("%kit_name%", kitModel.getName()));
 
         KitItem kitItem = null;
-        if(!kit.playerHasPermission(player)){
-            kitItem = kit.getDisplayItemNoPermission();
+        if(!kitModel.playerHasPermission(player)){
+            kitItem = kitModel.getDisplayItemNoPermission();
         }else{
             //One time
-            if(kit.isOneTime() && !PlayerUtils.isPlayerKitsAdmin(player) && playerDataManager.isKitOneTime(player,kit.getName())){
-                kitItem = kit.getDisplayItemOneTime();
+            if(kitModel.isOneTime() && !PlayerUtils.isPlayerKitsAdmin(player) && playerDataManager.isKitOneTime(player, kitModel.getName())){
+                kitItem = kitModel.getDisplayItemOneTime();
             }
 
             //One time requirements
-            if(kit.getRequirements() != null && kit.getRequirements().isOneTimeRequirements()
-                && playerDataManager.isKitBought(player,kit.getName())){
-                kitItem = kit.getDisplayItemOneTimeRequirements();
+            if(kitModel.getRequirements() != null && kitModel.getRequirements().isOneTimeRequirements()
+                && playerDataManager.isKitBought(player, kitModel.getName())){
+                kitItem = kitModel.getDisplayItemOneTimeRequirements();
             }
 
             //Cooldown
-            long playerCooldown = playerDataManager.getKitCooldown(player,kit.getName());
-            if(kit.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player)){
+            long playerCooldown = playerDataManager.getKitCooldown(player, kitModel.getName());
+            if(kitModel.getCooldown() != 0 && !PlayerUtils.isPlayerKitsAdmin(player)){
                 String timeStringMillisDif = playerDataManager.getKitCooldownString(playerCooldown);
                 if(!timeStringMillisDif.isEmpty()) {
-                    kitItem = kit.getDisplayItemCooldown();
+                    kitItem = kitModel.getDisplayItemCooldown();
                     variablesToReplace.add(new KitVariable("%time%",timeStringMillisDif));
                 }
             }
         }
         if(kitItem == null){
-            kitItem = kit.getDisplayItemDefault();
+            kitItem = kitModel.getDisplayItemDefault();
         }
 
         ItemStack item = kitItemManager.createItemFromKitItem(kitItem,player);

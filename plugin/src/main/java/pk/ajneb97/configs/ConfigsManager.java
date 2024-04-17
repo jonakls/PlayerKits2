@@ -6,26 +6,26 @@ public class ConfigsManager {
 
     private PlayerKits2 plugin;
 
-    private KitsConfigManager kitsConfigManager;
-    private MessagesConfigManager messagesConfigManager;
-    private MainConfigManager mainConfigManager;
-    private PlayersConfigManager playersConfigManager;
-    private InventoryConfigManager inventoryConfigManager;
+    private final KitsConfigManager kitsConfigManager;
+    private final MessagesConfigManager messagesConfigManager;
+    private final MainConfigManager mainConfigManager;
+    private final PlayersConfigManager playersConfigManager;
+    private final InventoryConfigManager inventoryConfigManager;
 
-    public ConfigsManager(PlayerKits2 plugin){
+    public ConfigsManager(PlayerKits2 plugin) {
         this.plugin = plugin;
-        this.kitsConfigManager = new KitsConfigManager(plugin,"kits");
+        this.kitsConfigManager = new KitsConfigManager(plugin, "kits");
         this.messagesConfigManager = new MessagesConfigManager(plugin);
         this.mainConfigManager = new MainConfigManager(plugin);
-        this.playersConfigManager = new PlayersConfigManager(plugin,"players");
+        this.playersConfigManager = new PlayersConfigManager(plugin, "players");
         this.inventoryConfigManager = new InventoryConfigManager(plugin);
     }
 
-    public void configure(){
+    public void configure() {
         this.kitsConfigManager.configure();
         this.messagesConfigManager.configure();
         this.mainConfigManager.configure();
-        if(!mainConfigManager.isMySQL()){
+        if (!mainConfigManager.isMySQL()) {
             this.playersConfigManager.configure();
         }
         this.inventoryConfigManager.configure();
@@ -51,18 +51,18 @@ public class ConfigsManager {
         return inventoryConfigManager;
     }
 
-    public boolean reload(){
-        if(!messagesConfigManager.reloadConfig()){
+    public boolean reload() {
+        if (!messagesConfigManager.reloadConfig()) {
             return false;
         }
-        if(!mainConfigManager.reloadConfig()){
+        if (!mainConfigManager.reloadConfig()) {
             return false;
         }
-        if(!inventoryConfigManager.reloadConfig()){
+        if (!inventoryConfigManager.reloadConfig()) {
             return false;
         }
         kitsConfigManager.reloadConfigs();
-        if(plugin.getMySQLConnection() == null){
+        if (plugin.getMySQLConnection() == null) {
             plugin.reloadPlayerDataSaveTask();
         }
 

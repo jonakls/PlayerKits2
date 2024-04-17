@@ -2,57 +2,57 @@ package pk.ajneb97.api;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
-import pk.ajneb97.PlayerKits2;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ExpansionPlayerKits extends PlaceholderExpansion {
 
-    // We get an instance of the plugin later.
-    private PlayerKits2 plugin;
+    private final Plugin plugin;
 
-    public ExpansionPlayerKits(PlayerKits2 plugin) {
-    	this.plugin = plugin;
+    public ExpansionPlayerKits(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     @Override
-    public boolean persist(){
+    public boolean persist() {
         return true;
     }
 
     @Override
-    public boolean canRegister(){
+    public boolean canRegister() {
         return true;
     }
 
     @Override
-    public String getAuthor(){
-        return "Ajneb97";
+    public @NotNull String getAuthor() {
+        return "Ajneb97 & Jonakls";
     }
 
     @Override
-    public String getIdentifier(){
+    public @NotNull String getIdentifier() {
         return "playerkits";
     }
 
     @Override
-    public String getVersion(){
-        return plugin.getDescription().getVersion();
+    @SuppressWarnings({"UnstableApiUsage"})
+    public @NotNull String getVersion() {
+        return plugin.getPluginMeta().getVersion();
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, String identifier){
+    public @Nullable String onPlaceholderRequest(@NotNull Player player, @NotNull String identifier) {
 
-        if(player == null){
-            return "";
+        if (identifier.startsWith("cooldown_")) {
+            // %playerkits_cooldown_<kit>%
+            String kitName = identifier.replace("cooldown_", "");
+            return null; // TODO: Implement this
         }
 
-        if(identifier.startsWith("cooldown_")){
-        	// %playerkits_cooldown_<kit>%
-        	String event = identifier.replace("cooldown_", "");
-            return PlayerKitsAPI.getKitCooldown(player,event);
-        }else if(identifier.startsWith("onetime_ready_")){
+        if (identifier.startsWith("onetime_ready_")) {
             // %conditionalevents_onetime_ready_<kit>%
-            String event = identifier.replace("onetime_ready_", "");
-            return PlayerKitsAPI.getOneTimeReady(player,event);
+            String kitName = identifier.replace("onetime_ready_", "");
+            return null; // TODO: Implement this
         }
 
         return null;

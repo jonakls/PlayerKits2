@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.MessagesManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
 import pk.ajneb97.utils.InventoryItem;
 import pk.ajneb97.utils.OtherUtils;
 
@@ -35,8 +35,8 @@ public class InventoryEditActionsEditManager {
         //Set Go Back
         new InventoryItem(inv, 18, Material.ARROW).name("&eGo Back").ready();
 
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
-        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kit, type).get(actionSlot);
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kitModel, type).get(actionSlot);
 
         //Set Edit Action
         List<String> lore = new ArrayList<>();
@@ -118,27 +118,27 @@ public class InventoryEditActionsEditManager {
     }
 
     public void alternateExecutionBeforeGivingItems(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String type = getType(inventoryPlayer);
         int slot = getActionSlot(inventoryPlayer);
-        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kit, type).get(slot);
+        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kitModel, type).get(slot);
         kitAction.setExecuteBeforeItems(!kitAction.isExecuteBeforeItems());
 
         openInventory(inventoryPlayer,type,slot);
 
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public void alternateCountAsItem(InventoryPlayer inventoryPlayer){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String type = getType(inventoryPlayer);
         int slot = getActionSlot(inventoryPlayer);
-        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kit, type).get(slot);
+        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kitModel, type).get(slot);
         kitAction.setCountAsItem(!kitAction.isCountAsItem());
 
         openInventory(inventoryPlayer,type,slot);
 
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public void clickEditAction(InventoryPlayer inventoryPlayer){
@@ -152,16 +152,16 @@ public class InventoryEditActionsEditManager {
     }
 
     public void editAction(InventoryPlayer inventoryPlayer,String message){
-        Kit kit = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
+        KitModel kitModel = plugin.getKitsManager().getKitByName(inventoryPlayer.getKitName());
         String[] sep = inventoryPlayer.getInventoryName().replace("edit_chat_action_slot_","").split("_");
         String type = sep[0];
         int slot = Integer.parseInt(sep[1]);
-        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kit, type).get(slot);
+        KitAction kitAction = inventoryEditActionsManager.getKitActionsFromType(kitModel, type).get(slot);
         kitAction.setAction(message);
 
         inventoryEditActionsManager.getInventoryEditManager().removeInventoryPlayer(inventoryPlayer.getPlayer());
         openInventory(inventoryPlayer,type,slot);
-        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kit);
+        plugin.getConfigsManager().getKitsConfigManager().saveConfig(kitModel);
     }
 
     public String getType(InventoryPlayer inventoryPlayer){

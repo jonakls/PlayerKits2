@@ -2,18 +2,19 @@ package pk.ajneb97.configs;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import pk.ajneb97.PlayerKits2;
+import pk.ajneb97.api.model.kit.KitModel;
+import pk.ajneb97.configuration.CustomConfiguration;
 import pk.ajneb97.managers.KitItemManager;
-import pk.ajneb97.api.model.Kit;
-import pk.ajneb97.api.model.KitAction;
-import pk.ajneb97.api.model.KitRequirements;
-import pk.ajneb97.api.model.item.KitItem;
+import pk.ajneb97.api.model.kit.KitAction;
+import pk.ajneb97.api.model.kit.KitRequirements;
+import pk.ajneb97.api.model.kit.item.KitItem;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 public class KitsConfigManager {
-    private ArrayList<CustomConfig> configFiles;
+    private ArrayList<CustomConfiguration> configFiles;
     private String folderName;
     private PlayerKits2 plugin;
 
@@ -48,9 +49,9 @@ public class KitsConfigManager {
     }
 
     public void createDefaultConfigs(){
-        new CustomConfig("diamond.yml",plugin,folderName,false).registerConfig();
-        new CustomConfig("iron.yml",plugin,folderName,false).registerConfig();
-        new CustomConfig("food.yml",plugin,folderName,false).registerConfig();
+        new CustomConfiguration("diamond.yml",plugin,folderName,false).registerConfig();
+        new CustomConfiguration("iron.yml",plugin,folderName,false).registerConfig();
+        new CustomConfiguration("food.yml",plugin,folderName,false).registerConfig();
     }
 
     public void saveConfigFiles() {
@@ -66,14 +67,14 @@ public class KitsConfigManager {
         for (int i=0;i<listOfFiles.length;i++) {
             if(listOfFiles[i].isFile()) {
                 String pathName = listOfFiles[i].getName();
-                CustomConfig config = new CustomConfig(pathName, plugin, folderName, true);
+                CustomConfiguration config = new CustomConfiguration(pathName, plugin, folderName, true);
                 config.registerConfig();
                 configFiles.add(config);
             }
         }
     }
 
-    public ArrayList<CustomConfig> getConfigs(){
+    public ArrayList<CustomConfiguration> getConfigs(){
         return this.configFiles;
     }
 
@@ -86,7 +87,7 @@ public class KitsConfigManager {
         return false;
     }
 
-    public CustomConfig getConfigFile(String pathName) {
+    public CustomConfiguration getConfigFile(String pathName) {
         for(int i=0;i<configFiles.size();i++) {
             if(configFiles.get(i).getPath().equals(pathName)) {
                 return configFiles.get(i);
@@ -97,7 +98,7 @@ public class KitsConfigManager {
 
     public boolean registerConfigFile(String pathName) {
         if(!fileAlreadyRegistered(pathName)) {
-            CustomConfig config = new CustomConfig(pathName, plugin, folderName, true);
+            CustomConfiguration config = new CustomConfiguration(pathName, plugin, folderName, true);
             config.registerConfig();
             configFiles.add(config);
             return true;
@@ -115,72 +116,72 @@ public class KitsConfigManager {
     }
 
     public void loadConfigs(){
-        ArrayList<Kit> kits = new ArrayList<Kit>();
-        for(CustomConfig configFile : configFiles){
-            FileConfiguration config = configFile.getConfig();
+        ArrayList<KitModel> kitModels = new ArrayList<KitModel>();
+        for(CustomConfiguration configFile : configFiles){
+            FileConfiguration config = configFile.get();
 
             String name = configFile.getPath().replace(".yml","");
-            Kit kit = getKitFromConfig(config,plugin,name,"");
-            kits.add(kit);
+            KitModel kitModel = getKitFromConfig(config,plugin,name,"");
+            kitModels.add(kitModel);
         }
 
-        plugin.getKitsManager().setKits(kits);
+        plugin.getKitsManager().setKits(kitModels);
     }
 
     public void saveConfigs(){
 
     }
 
-    public void saveConfig(Kit kit){
-        String kitName = kit.getName();
-        CustomConfig kitConfig = getConfigFile(kitName+".yml");
+    public void saveConfig(KitModel kitModel){
+        String kitName = kitModel.getName();
+        CustomConfiguration kitConfig = getConfigFile(kitName+".yml");
         if(kitConfig == null) {
             registerConfigFile(kitName+".yml");
             kitConfig = getConfigFile(kitName+".yml");
         }
 
-        FileConfiguration config = kitConfig.getConfig();
+        FileConfiguration config = kitConfig.get();
 
-        config.set("cooldown",kit.getCooldown());
-        config.set("one_time",kit.isOneTime());
-        config.set("auto_armor",kit.isAutoArmor());
-        config.set("permission_required",kit.isPermissionRequired());
+        config.set("cooldown", kitModel.getCooldown());
+        config.set("one_time", kitModel.isOneTime());
+        config.set("auto_armor", kitModel.isAutoArmor());
+        config.set("permission_required", kitModel.isPermissionRequired());
 
         KitItemManager kitItemManager = plugin.getKitItemManager();
         int currentPos = 1;
         config.set("items",null);
-        for(KitItem kitItem : kit.getItems()){
+        for(KitItem kitItem : kitModel.getItems()){
             kitItemManager.saveKitItemOnConfig(kitItem,config,"items."+currentPos);
             currentPos++;
         }
 
 
         config.set("actions",null);
-        saveActions(kit.getClaimActions(),"claim",config,kitItemManager);
-        saveActions(kit.getErrorActions(),"error",config,kitItemManager);
+        saveActions(kitModel.getClaimActions(),"claim",config,kitItemManager);
+        saveActions(kitModel.getErrorActions(),"error",config,kitItemManager);
 
         config.set("display.default",null);
-        if(kit.getDisplayItemDefault() != null){
-            kitItemManager.saveKitItemOnConfig(kit.getDisplayItemDefault(),config,"display.default");
+        if(kitModel.getDisplayItemDefault() != null){
+            kitItemManager.saveKitItemOnConfig(kitModel.getDisplayItemDefault(),config,"display.default");
         }
         config.set("display.no_permission",null);
-        if(kit.getDisplayItemNoPermission() != null){
-            kitItemManager.saveKitItemOnConfig(kit.getDisplayItemNoPermission(),config,"display.no_permission");
+        if(kitModel.getDisplayItemNoPermission() != null){
+            kitItemManager.saveKitItemOnConfig(kitModel.getDisplayItemNoPermission(),config,"display.no_permission");
         }
         config.set("display.cooldown",null);
-        if(kit.getDisplayItemCooldown() != null){
-            kitItemManager.saveKitItemOnConfig(kit.getDisplayItemCooldown(),config,"display.cooldown");
+        if(kitModel.getDisplayItemCooldown() != null){
+            kitItemManager.saveKitItemOnConfig(kitModel.getDisplayItemCooldown(),config,"display.cooldown");
         }
         config.set("display.one_time",null);
-        if(kit.getDisplayItemOneTime() != null){
-            kitItemManager.saveKitItemOnConfig(kit.getDisplayItemOneTime(),config,"display.one_time");
+        if(kitModel.getDisplayItemOneTime() != null){
+            kitItemManager.saveKitItemOnConfig(kitModel.getDisplayItemOneTime(),config,"display.one_time");
         }
         config.set("display.one_time_requirements",null);
-        if(kit.getDisplayItemOneTimeRequirements() != null){
-            kitItemManager.saveKitItemOnConfig(kit.getDisplayItemOneTimeRequirements(),config,"display.one_time_requirements");
+        if(kitModel.getDisplayItemOneTimeRequirements() != null){
+            kitItemManager.saveKitItemOnConfig(kitModel.getDisplayItemOneTimeRequirements(),config,"display.one_time_requirements");
         }
 
-        KitRequirements requirements = kit.getRequirements();
+        KitRequirements requirements = kitModel.getRequirements();
         if(requirements != null){
             config.set("requirements.one_time_requirements",requirements.isOneTimeRequirements());
             if(requirements.getExtraRequirements() != null){
@@ -214,7 +215,7 @@ public class KitsConfigManager {
     }
 
     public void removeKitFile(String kitName){
-        CustomConfig kitConfig = getConfigFile(kitName+".yml");
+        CustomConfiguration kitConfig = getConfigFile(kitName+".yml");
         if(kitConfig == null){
             return;
         }
@@ -226,7 +227,7 @@ public class KitsConfigManager {
     }
 
     // mainPath must include a "." at the end
-    public static Kit getKitFromConfig(FileConfiguration config, PlayerKits2 plugin, String name, String mainPath){
+    public static KitModel getKitFromConfig(FileConfiguration config, PlayerKits2 plugin, String name, String mainPath){
         KitItemManager kitItemManager = plugin.getKitItemManager();
         int cooldown = config.contains(mainPath+"cooldown") ? config.getInt(mainPath+"cooldown") : 0;
         boolean permissionRequired = config.contains(mainPath+"permission_required") ? config.getBoolean(mainPath+"permission_required") : false;
@@ -264,23 +265,23 @@ public class KitsConfigManager {
         }
 
 
-        Kit kit = new Kit(name);
-        kit.setCooldown(cooldown);
+        KitModel kitModel = new KitModel(name);
+        kitModel.setCooldown(cooldown);
 
-        kit.setAutoArmor(autoArmor);
-        kit.setOneTime(oneTime);
-        kit.setPermissionRequired(permissionRequired);
-        kit.setItems(items);
-        kit.setClaimActions(claimActions);
-        kit.setErrorActions(errorActions);
-        kit.setDisplayItemDefault(displayItemDefault);
-        kit.setDisplayItemNoPermission(displayItemNoPermission);
-        kit.setDisplayItemCooldown(displayItemCooldown);
-        kit.setDisplayItemOneTime(displayItemOneTime);
-        kit.setDisplayItemOneTimeRequirements(displayItemOneTimeRequirements);
-        kit.setRequirements(kitRequirements);
+        kitModel.setAutoArmor(autoArmor);
+        kitModel.setOneTime(oneTime);
+        kitModel.setPermissionRequired(permissionRequired);
+        kitModel.setItems(items);
+        kitModel.setClaimActions(claimActions);
+        kitModel.setErrorActions(errorActions);
+        kitModel.setDisplayItemDefault(displayItemDefault);
+        kitModel.setDisplayItemNoPermission(displayItemNoPermission);
+        kitModel.setDisplayItemCooldown(displayItemCooldown);
+        kitModel.setDisplayItemOneTime(displayItemOneTime);
+        kitModel.setDisplayItemOneTimeRequirements(displayItemOneTimeRequirements);
+        kitModel.setRequirements(kitRequirements);
 
-        return kit;
+        return kitModel;
     }
 
     public static ArrayList<KitAction> getActions(FileConfiguration config,String actionType,String mainPath,KitItemManager kitItemManager){

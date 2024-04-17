@@ -6,8 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import pk.ajneb97.PlayerKits2;
 import pk.ajneb97.managers.*;
-import pk.ajneb97.api.model.inventory.InventoryPlayer;
-import pk.ajneb97.api.utils.ItemUtils;
+import pk.ajneb97.api.model.gui.InventoryPlayer;
+import pk.ajneb97.utils.ItemUtils;
 
 import java.util.ArrayList;
 
