@@ -36,7 +36,7 @@ public class PlayerModel implements Model {
         this.uuid = uuid;
     }
 
-    public ArrayList<PlayerDataKit> getKits() {
+    public List<PlayerDataKit> getKits() {
         return kits;
     }
 

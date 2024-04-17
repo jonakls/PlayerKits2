@@ -62,7 +62,7 @@ public class InventoryRequirementsManager {
         for(String condition : extraRequirements) {
             boolean pass = false;
             if(isPlaceholderAPI) {
-                pass = PlayerUtils.passCondition(player, condition);
+                pass = pk.ajneb97.utils.PlayerUtils.passCondition(player, condition);
             }
             requirementsBooleans.add(pass);
         }
